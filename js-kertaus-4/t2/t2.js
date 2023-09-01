@@ -771,3 +771,60 @@ const restaurants = [
 ];
 
 // your code here
+restaurants.sort((a, b) => {
+  return a.name.localeCompare(b.name);
+});
+console.log(restaurants);
+
+restaurants.forEach(restaurant => {
+  const table = document.querySelector('table');
+  const row = document.createElement('tr');
+  const name = document.createElement('td');
+  const address = document.createElement('td');
+  name.textContent = restaurant.name;
+  address.textContent = restaurant.address;
+  row.appendChild(name);
+  row.appendChild(address);
+  table.appendChild(row);
+
+  row.addEventListener('click', () => {
+    const rows = document.querySelectorAll('tr');
+    rows.forEach(row => {
+      row.classList.remove('highlight');
+    });
+    row.classList.add('highlight');
+    openDialog(
+      restaurant.name,
+      restaurant.address,
+      restaurant.postalCode,
+      restaurant.city,
+      restaurant.phone,
+      restaurant.company
+    );
+  });
+});
+
+const dialog = document.querySelector('dialog');
+const restaurantRows = document.querySelectorAll('.restaurant');
+
+function openDialog(name, address, postalCode, city, phone, company) {
+  const dialogContent = `
+    <h2>Restaurant Info</h2>
+    <p>Name: ${name}</p>
+    <p>Address: ${address}</p>
+    <p>postalCode: ${postalCode}</p>
+    <p>city: ${city}</p>
+    <p>phone: ${phone}</p>
+    <p>company: ${company}</p>
+  `;
+  dialog.innerHTML = dialogContent;
+  dialog.showModal();
+}
+
+restaurantRows.forEach(function (row) {
+  row.addEventListener('click', function () {
+    const name = row.querySelector('td:nth-child(1)').textContent;
+    const address = row.querySelector('td:nth-child(2)').textContent;
+    openDialog(name, address);
+  });
+});
